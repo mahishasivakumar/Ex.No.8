@@ -3,167 +3,98 @@
 # Nmae : Mahisha S
 # Reg. No: 212222040095
 
-## AIM:
+## Aim
 
-To explore how various prompting techniques can be used to generate and manipulate audio content (e.g., music, sound effects, voice narration) using AI models.
+   To reproduce a given image using text-to-image generation models through prompt engineering and iterative refinement.
 
-## AI Tools for Audio Generation:
+   Apparatus / Tools
 
-## 1. OpenAI's Jukebox:
+   Software: Python 3.9+, Stable Diffusion / DALL·E / Midjourney
 
-   * A neural network capable of producing full-length songs in a variety of styles, complete with lyrics and vocalizations.
-   * Responds to inputs like genre tags, lyrics snippets, and references to artists.
+   Libraries: diffusers, transformers, torch, PIL
+  
+   Hardware: GPU-enabled machine (NVIDIA preferred)
 
-## 2. Google's AudioLM:
+   Dataset: Target image(s) stored in target_images/
 
-   * Designed for context-aware generation of audio including speech and music.
-   * Accepts both acoustic and text-based inputs and excels in smooth continuation.
+## Theory
 
-## 3. Meta's MusicGen:
+Modern text-to-image models generate images from textual descriptions.
+The reproduction process involves:
 
-   * A text-to-music model that produces high-quality music clips based on descriptive prompts.
-   * Can specify instruments, mood, tempo, and genre.
+Observing the target image
 
+Extracting descriptive features (subject, style, lighting, composition)
 
-## Prompting Techniques:
+Converting them into prompt templates
 
-## 1. Textual Descriptions:
+Iteratively refining prompts until the generated output visually resembles the target.
 
-   * Type: Simple prompts that describe the desired output.
-   * Examples:
+Metrics like SSIM (Structural Similarity) or CLIP similarity can be used to measure closeness.
 
-     * Music: "A dreamy ambient track with echoing synths."
-     * Sound Effect: "Crackling fire with distant forest ambiance."
-     * Voice: "A calm female narrator reading a bedtime story."
-   * Tool Fit:
+## Procedure
 
-     * Jukebox: Ideal for genre-artist alignment.
-     * AudioLM: Effective for descriptive speech prompts.
-     * MusicGen: Works best with richly detailed text.
+Place a target image in target_images/img01.jpg.
 
-## 2. Conditional Prompts
+Analyze its features (e.g., subject: cat sitting on a window sill; lighting: natural daylight; style: realistic photograph).
 
-   * Type: Prompts that extend or modify a given audio sample.
-   * Example: "Extend this flute solo with percussion and harmonies."
-   * Tool Fit:
+Write initial prompts. Example:
 
-     * AudioLM: Strong in audio extension.
-     * Jukebox: Useful for maintaining stylistic continuity.
+A cat sitting on a window sill, realistic photograph.
 
-## 3. Structured Prompts
+A close-up photo of a cat sitting on a window sill, natural daylight, realistic, detailed texture.
 
-   * Type: JSON-style prompts with attributes.
-   * Example:
+Generate images using Stable Diffusion or chosen tool.
 
-     ```
-     {
-       "genre": "Electronic",
-       "tempo": "Moderate",
-       "instrument": "Synthesizer"
-     }
-     ```
-   * Tool Fit:
+Refine prompts by adding/removing attributes.
 
-     * MusicGen: Parses structured data effectively.
-     * AudioLM: Responds to abstract structured input.
+Save outputs and compare them with the target.
 
-## 4. Stylistic Prompts
+Record observations and compute similarity metrics.
 
-   * Type: Focused on style, era, or tone.
-   * Example:
+Structured Code Example (Stable Diffusion with Diffusers)
+from diffusers import StableDiffusionPipeline
+import torch, os
+from PIL import Image
 
-     * "A vintage 80s pop beat with analog synth sounds."
-     * "Monologue in the voice of a Shakespearean villain."
-   * Tool Fit:
+# Load Stable Diffusion
+pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5").to("cuda")
 
-     * Jukebox: Excellent for music style reproduction.
-     * AudioLM: Can generate nuanced speech tones.
+# Target image
+target = Image.open("target_images/img01.jpg").convert("RGB")
 
-## 5. Iterative Prompt Refinement
+# Prompts
+prompts = [
+    "A cat sitting on a window sill, realistic photograph.",
+    "A close-up photo of a cat sitting on a window sill, natural daylight, realistic, detailed texture."
+]
 
-   * Type: Modify prompt based on initial result.
-   * Example:
+output_dir = "outputs/exp8"
+os.makedirs(output_dir, exist_ok=True)
 
-     * Start: "Generate relaxing music."
-     * Refined: "Include harp and ocean waves for a spa ambiance."
-   * Tool Fit:
+# Generate and save images
+for i, prompt in enumerate(prompts):
+    image = pipe(prompt, guidance_scale=7.5, num_inference_steps=40).images[0]
+    image.save(os.path.join(output_dir, f"gen_{i+1}.png"))
+    print(f"Saved: gen_{i+1}.png")
 
-     * Universally effective across Jukebox, AudioLM, and MusicGen.
+# Sample Images (Illustrative)
 
-## Optimization Strategies:
+# Target Image:
 
-## 1. Be Specific:
+Generated Output 1 (simple prompt):
 
-   * Include genre, instruments, mood, and sound profile.
-   * Better: "Upbeat Latin rhythm with acoustic guitar and bongos."
+Generated Output 2 (refined prompt):
 
-## 3. Tool Selection:
-   * Jukebox: Best for vocal music in known styles.
-   * AudioLM: Best for extending and morphing speech/music.
-   * MusicGen: Best for detailed instrumental generation.
+(Note: The above are sample placeholders; replace with your generated images in outputs/exp8/)
 
-## 4. Prompt Length Variation:
+## Observations
+Prompt Version	Features Captured	Similarity (Visual)	Remarks
+Simple Prompt	Subject only	Moderate	Background & lighting missing
+Refined Prompt	Subject + Lighting + Style	High	Closely resembles target
+Result
 
-   * Test both concise and detailed prompts to determine impact.
-
-## 5. Iterative Tuning:
-
-   * Start broad and refine iteratively for precision.
-
-## 6. Hybrid Input:
-
-   * Combine audio snippets and text to guide AI.
-
-
-## Expected Output:
-
-**1. Deliverables**
-
-A. **Set of Prompts**
-
-* *Basic:* "Create upbeat electronic music."
-* *Intermediate:* "Generate a 90-second funk track with bass guitar and claps."
-* *Advanced:* "Compose a 3-minute orchestral soundtrack that starts solemnly and crescendos into an epic climax with full brass and choir."
-
-B. **Generated Outputs**
-
-* Audio files stored and labeled by prompt tier.
-
-C. **Observations & Insights**
-
-* Short prompts yield generic responses.
-* Precision in descriptors like mood and instrument improves output relevance.
-* Impactful keywords: tempo, instrumentation, emotional tone.
-
-D. **Optimization Report**
-
-* *Best Practices:*
-
-  * Be descriptive: Use genre, tempo, and instruments.
-  * Include constraints (e.g., "120 BPM", "female voice").
-  * Use multimodal input if supported.
-
-**2. Advanced Techniques**
-
-A. **Iterative Prompting**
-
-* Initial: "Make a lo-fi beat."
-* Refined: "Add vinyl crackle and a jazzy piano loop."
-
-B. **Parameter Tweaking**
-
-* Volume: "Make it soft background music."
-* Tempo: "Set rhythm to 100 BPM."
-
-C. **Layered Prompts**
-
-* Step 1: "Create a melody with bells."
-* Step 2: "Overlay mellow bass and hi-hats."
-
-D. **Accent and Language Variation**
-
-* "Narrate this poem in a soft Irish accent."
-
+The refined prompt reproduced the target image more accurately, demonstrating that prompt specificity improves fidelity.
 
 ## Result:
 
