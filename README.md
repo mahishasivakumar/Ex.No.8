@@ -1,6 +1,6 @@
-## Exp 8: Exploration of Prompting Techniques for Audio Generation
+## Exp 8: Reproducing an Image Using Prompts for Image Generation
 
-# Name: Mahisha S
+# Date : 
 # Reg. No: 212222040095
 
 ## AIM:
@@ -171,9 +171,7 @@ D. **Accent and Language Variation**
 The experiment successfully explored how structured, conditional, and creative prompting affects the quality of AI-generated audio. Rich, specific prompts and thoughtful refinement enhanced control over the output. By leveraging the strengths of tools like Jukebox, AudioLM, and MusicGen, users can generate high-quality audio for music, speech, and soundscapes tailored to a wide range of applications.
 
 ## Sample Audio URLs (Generated):
-```
-Prompt - Speak about AI in future.
-Language - Tamil
-Tool - SpeechMa
-```
-Drive link : https://drive.google.com/file/d/1tUvzYmTzYQvDG_pnfksTdFzNCILGmFvB/view?usp=drive_link
+
+1. Basic Prompt Audio: https://drive.google.com/file/d/1bceACSVXfc3NmEDp-ymD_NsEX-XLmWHD/view?usp=drive_link
+2. Intermediate Prompt Audio: https://drive.google.com/file/d/1S2XWwp3c-RjhieJLaXPQ_ce5q24FFAzi/view?usp=drive_link
+3. Advanced Prompt Audio: https://drive.google.com/file/d/1_mA61G-Jmv6JxLvtnxEASOKCfAPzsPzo/view?usp=drive_link
